@@ -4,10 +4,6 @@ pub struct GlobObj {
     pub iter: glob::Paths,
 }
 
-/*
- * I don't like the behavior of including empty folders in the result, 
- * so I want to make it closer to Python's glob behavior.
- */
 impl Iterator for GlobObj {
     type Item = String;
     fn next(&mut self) -> Option<Self::Item> {
@@ -23,6 +19,13 @@ impl Iterator for GlobObj {
 pub fn globobj(pattern: &str) -> GlobObj {
     GlobObj {
         iter: glob(pattern).expect("failed"),
+    }
+}
+
+#[test]
+fn basic() {
+    for target in globobj("./**/*.rs") {
+        println!("{}", target);
     }
 }
 
