@@ -9,7 +9,7 @@ impl Iterator for GlobObj {
     fn next(&mut self) -> Option<Self::Item> {
         match self.iter.next() {
             Some(Ok(path)) => {
-                Some(path.to_str().expect("err").to_owned())
+                Some(path.to_str().unwrap().to_owned())
             }
             _ => None,
         }
@@ -18,7 +18,7 @@ impl Iterator for GlobObj {
 
 pub fn globobj(pattern: &str) -> GlobObj {
     GlobObj {
-        iter: glob(pattern).expect("failed"),
+        iter: glob(pattern).unwrap(),
     }
 }
 
