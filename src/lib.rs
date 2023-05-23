@@ -1,4 +1,5 @@
 use glob::glob;
+use std::error::Error;
 
 pub struct GlobObj {
     pub iter: glob::Paths,
@@ -16,16 +17,15 @@ impl Iterator for GlobObj {
     }
 }
 
-pub fn globobj(pattern: &str) -> GlobObj {
-    GlobObj {
-        iter: glob(pattern).unwrap(),
-    }
+pub fn globobj(pattern: &str) -> Result<GlobObj, Box<dyn Error>> {
+    let iter = glob(pattern)?;
+    Ok(GlobObj { iter })
 }
 
 #[test]
 fn basic() {
-    for target in globobj("./**/*.rs") {
-        println!("{}", target);
+    for target in globobj("./**/*.rs").unwrap() {
+        println!("target: {}", target);
     }
 }
 
